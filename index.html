@@ -14,10 +14,6 @@
 
     <section class="container" id="demo-content">
 
-      <div>
-        <button type="button" class="button" id="startButton">Start</button>
-        <button type="button" class="button" id="resetButton">Reset</button>
-      </div>
 <style>
 video {
 border-width:2px;
@@ -61,17 +57,10 @@ border-color:black;
               sourceOption.value = element.deviceId
               sourceSelect.appendChild(sourceOption)
             })
-
-            sourceSelect.onchange = () => {
-              selectedDeviceId = sourceSelect.value;
-            };
-
-            const sourceSelectPanel = document.getElementById('sourceSelectPanel')
-            sourceSelectPanel.style.display = 'block'
-          }
-
-          document.getElementById('startButton').addEventListener('click', () => {
-            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+			
+			
+			let StartFunc = () => {
+			  codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
               if (result) {
                 console.log(result)
                 document.getElementById('result').textContent = result.text
@@ -82,14 +71,21 @@ border-color:black;
               }
             })
             console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
-          })
+			
+			}
+			
+			
 
-          document.getElementById('resetButton').addEventListener('click', () => {
-            codeReader.reset()
-            document.getElementById('result').textContent = '';
-            console.log('Reset.')
-          })
+            sourceSelect.onchange = () => {
+              selectedDeviceId = sourceSelect.value;
+			  StartFunc();
+            };
 
+            const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+            sourceSelectPanel.style.display = 'block'
+			
+			StartFunc();
+          }
         })
         .catch((err) => {
           console.error(err)
